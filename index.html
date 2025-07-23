@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gaming Blog Website</title>
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    :root {
+      --side-margin: 12.5rem; /* 200px converted to rem */
+      --section-max-width: 80vw;
+      --card-min-width: 18rem;
+      --gap-large: 2.5rem;
+      --gap-medium: 2rem;
+      --gap-small: 1.5rem;
+      --border-radius: 1.2rem;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: black;
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+    }
+    .container-custom {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      max-width: var(--section-max-width);
+    }
+    .glass {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(0.5rem);
+    }
+    /* Navbar: no border-radius, linear gradient black-to-transparent */
+    .navbar, .dropdown-menu {
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.4rem);
+      border-bottom: 0.05rem solid rgba(255,255,255,0.25);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 2.2rem;
+      letter-spacing: 0.15rem;
+    }
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: auto;
+    }
+    .nav-link, .dropdown-item {
+      color: #fff !important;
+      position: relative;
+      transition: all 0.3s;
+      border-bottom: 0.1rem solid transparent;
+      font-size: 1.15rem;
+      text-decoration: none !important;
+    }
+    .nav-link:hover {
+      border-bottom: 0.1rem solid #fff;
+      color: #0dcaf0 !important;
+    }
+    .nav-link.active {
+      color: #0dcaf0 !important;
+    }
+    /* Notification and Account: transparent border to prevent icon movement */
+    .notification-btn, .account-btn {
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 1.8rem;
+      margin-left: 0.6rem;
+      position: relative;
+      border-bottom: 0.1rem solid transparent;
+      transition: border-bottom 0.3s, color 0.3s;
+      padding-bottom: 0.3rem;
+      text-decoration: none !important;
+    }
+    .notification-btn:hover, .account-btn:hover {
+      color: #0dcaf0;
+      border-bottom: 0.1rem solid #fff;
+    }
+    .favorite-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      margin-left: 0.6rem;
+      position: relative;
+      text-decoration: none !important;
+    }
+    .favorite-btn:hover {
+      color: #0dcaf0;
+    }
+    .dropdown-menu .dropdown-item {
+      transition: background 0.3s, color 0.3s;
+      background: transparent;
+      text-decoration: none !important;
+    }
+    .dropdown-menu .dropdown-item:hover, 
+    .dropdown-menu .dropdown-item:focus {
+      background: rgba(200,200,200,0.12);
+      color: #0dcaf0 !important;
+      backdrop-filter: blur(0.25rem);
+      text-decoration: none !important;
+    }
+    .dropdown-menu {
+      min-width: 18rem;
+      border-radius: var(--border-radius);
+      border: 0.1rem solid rgba(255,255,255,0.13);
+      margin-top: 0.5rem;
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.5rem);
+    }
+    .btn-glass {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2.8rem;
+      border-radius: 0.7rem;
+      transition: all 0.3s ease;
+      font-size: 1.3rem;
+      border-width: .1rem;
+      border-style: solid;
+      box-shadow: 0 0.2rem 0.5rem #000;
+      text-decoration: none !important;
+    }
+    .btn-glass:hover {
+      background-color: white;
+      color: black;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.06rem;
+    }
+    .cards-row {
+      display: flex;
+      flex-direction: row;
+      gap: var(--gap-medium);
+      justify-content: center;
+      align-items: stretch;
+      width: 100%;
+      flex-wrap: wrap;
+    }
+    .game-card, .creator-card, .product-card {
+      background: linear-gradient(135deg, rgba(255,255,255,.1) 1%, rgba(0,0,0,0.9) 5%);
+      border-radius: var(--border-radius);
+      padding: 2rem 1.5rem;
+      margin-bottom: 1rem;
+      border: 0.1rem solid rgba(255,255,255,0.13);
+      transition: box-shadow 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-width: var(--card-min-width);
+      flex: 1 1 18rem;
+      max-width: 22rem;
+      font-size: 1.18rem;
+      cursor: pointer;
+      transition: all .3s ease;
+      backdrop-filter: none;
+      box-shadow: 0 .1rem .5rem #111;
+    }
+    .game-card img, .creator-card img, .product-card img {
+      width: 100%;
+      max-width: 22rem;
+      height: 12rem;
+      object-fit: cover;
+      border-radius: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .game-card:hover, .creator-card:hover, .product-card:hover {
+      transform: scale(105%);
+      box-shadow: 0 .5rem 2rem black;
+    }
+    .page-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap-large);
+      margin-bottom: var(--gap-large);
+      width: 100%;
+    }
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(2.5rem);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: none;
+    }
+    /* Header full width, image background, overlay */
+    .header-bg {
+      position: relative;
+      width: 100%;
+      min-height: 24vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      margin-bottom: 0;
+    }
+    .header-bg img {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100vw;
+      height: 100%;
+      object-fit: cover;
+      z-index: 1;
+      filter: brightness(0.45) blur(0.1rem);
+    }
+    .header-content {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      max-width: 60vw;
+      margin: auto;
+      padding: 5vw 2vw 5vw 2vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      background: rgba(40,40,40,0.18);
+      border-radius: 2rem;
+      box-shadow: 0 1.2rem 4rem 0 rgba(31,38,135,0.12);
+    }
+    .header-content h1 {
+      font-size: 3.2rem;
+      letter-spacing: 0.12rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 0 0.3rem 1rem #000;
+    }
+    .header-content p {
+      font-size: 1.3rem;
+      margin-bottom: 2rem;
+      color: #e2e2e2;
+      text-shadow: 0 0.2rem 0.5rem #000;
+    }
+    #latest-news {
+      margin-top: 5rem;
+    }
+    #newsletter {
+      width: 100%;
+      background: rgba(30,30,30,0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 0;
+    }
+    #newsletter .glass {
+      width: 100%;
+      padding: 5rem 2.5rem;
+      box-shadow: none;
+    }
+    #newsletter form {
+      width: 50%;
+      margin: auto;
+      text-align: center;
+    }
+    #newsletter input {
+      padding: 1rem 1rem;
+      font-size: 1.5rem;
+    }
+    footer {
+      width: 100%;
+      background: rgba(0,0,0,0.85);
+      color: #fff;
+      padding: 2rem 0 1.2rem 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .footer-links {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .footer-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.15rem;
+      transition: color 0.3s, text-decoration 0.3s;
+      padding: 0.3rem 1rem;
+      background: none;
+    }
+    .footer-links a:hover {
+      color: #0dcaf0;
+      text-decoration: underline;
+      background: none;
+    }
+    .footer-copyright {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 0;
+      opacity: 0.8;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg glass sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="#">GAMEBLOG</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link active" href="#">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              News
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+              <li><a class="dropdown-item" href="pages/games.html">Games</a></li>
+              <li><a class="dropdown-item" href="pages/product.html">Product</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="pages/newsletter.html">News Letter</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#make-blog">Edit</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="pages/favorite.html">Favorite</a></li>
+          <li class="nav-item dropdown">
+            <button class="notification-btn nav-link" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+              <li><a class="dropdown-item" href="pages/follow_news.html">Follow news</a></li>
+              <li><a class="dropdown-item" href="pages/follow_creators.html">Follow creators</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link account-btn" href="#account"><i class="bi bi-person"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Header Section -->
+  <div class="header-bg scroll-animate">
+    <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1600&q=80" alt="Gaming Header">
+    <div class="header-content">
+      <h1>Welcome to the Best Gaming Blog!</h1>
+      <p>Discover the latest news, reviews, products, and join a thriving gamer community. Stay tuned for updates, game releases, and exclusive newsletters.</p>
+      <a href="#latest-news" class="btn-glass cta-btn">Go to Latest News</a>
+    </div>
+  </div>
+
+  <!-- Latest News Section -->
+  <div id="latest-news" class="container-custom page-section scroll-animate">
+    <div class="section-title">Latest News</div>
+    <div class="cards-row">
+      <div class="game-card glass">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+          <img src="https://cdn1.epicgames.com/offer/77f2b98e2cef40c8a7437518bf420e47/EGS_Cyberpunk2077PhantomLiberty_CDPROJEKTRED_DLC_S2_1200x1600-3acec02a8b11a2c50ba8dd3cb217f1c6  " alt="Cyberpunk 2077 DLC">
+          <h4>Cyberpunk 2077 DLC Released</h4>
+          <p>New adventures in Night City. Patch 1.5 brings major improvements!</p>
+        </a>
+        
+      </div>
+      <div class="game-card glass">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+          <img src="https://images2.thanhnien.vn/528068263637045248/2024/11/4/ps5-pro-image-1730691922654-173069192359098317605.jpg" alt="PS5 Patch Update">
+          <h4>PS5 Patch Update</h4>
+          <p>System stability and performance boost in the latest update.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+          <img src="https://xboxwire.thesourcemediaassets.com/sites/2/2023/11/Publisher_Spotlight_16x9-2332e1344736829ec6a7.jpg" alt="Xbox Game Sale">
+          <h4>Xbox Game Sale</h4>
+          <p>Up to 50% off top titles for a limited time only!</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Games Section -->
+  <div id="games" class="container-custom page-section scroll-animate">
+    <div class="section-title">Games</div>
+    <div class="cards-row">
+      <div class="game-card glass" id="upcoming-games">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://image.api.playstation.com/vulcan/ap/rnd/202110/2000/YMUoJUYNX0xWk6eTKuZLr5Iw.jpg" alt="Upcoming Games">
+        <h5>Upcoming Games</h5>
+        <ul>
+          <li>Starfield</li>
+          <li>Elden Ring 2</li>
+          <li>Halo Infinite DLC</li>
+        </ul>
+        </a>
+      </div>
+      <div class="game-card glass" id="remake">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn.wccftech.com/wp-content/uploads/2023/02/WCCFresidentevil4remake14.jpg" alt="Remake">
+        <h5>Remake</h5>
+        <ul>
+          <li>Resident Evil 4 Remake</li>
+          <li>Silent Hill 2 Remake</li>
+        </ul>
+        </a>
+      </div>
+      <div class="game-card glass" id="update">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2778580/ss_c97bcad291f4f45d4be4594f34bd78921d961099.1920x1080.jpg?t=1718298737" alt="Update DLC PATCH">
+        <h5>Update (DLC, PATCH)</h5>
+        <ul>
+          <li>Elden Ring Expansion</li>
+          <li>Cyberpunk 2077 Patch</li>
+        </ul>
+        </a>
+      </div>
+      <div class="game-card glass" id="onsale-games">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://fizz-download.playnccdn.com/download/v2/buckets/test/files/19198c2273f-d2a3b8f4-5423-45ce-995a-d040ae44cbb4?format=webp" alt="On Sale Games">
+        <h5>On Sale Games</h5>
+        <ul>
+          <li>Horizon Forbidden West</li>
+          <li>Call of Duty: MWII</li>
+        </ul>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Section -->
+  <div id="product" class="container-custom page-section scroll-animate">
+    <div class="section-title">Product</div>
+    <div class="cards-row">
+      <div class="product-card glass" id="playstation">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://shoptaycam.com/wp-content/uploads/2024/08/ps5-astra-2.png" alt="Playstation">
+          <h5>Playstation</h5>
+          <ul>
+            <li>PS5 DualSense Controller</li>
+            <li>PS5 Console</li>
+          </ul>
+        </a>
+      </div>
+      <div class="product-card glass" id="xbox">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://bloganchoi.com/wp-content/uploads/2024/06/xbox-series-x-3.jpg" alt="Xbox">
+        <h5>Xbox</h5>
+        <ul>
+          <li>Xbox Series X</li>
+          <li>Elite Controller</li>
+        </ul>
+        </a>
+      </div>
+      <div class="product-card glass" id="gpu">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://www.nvidia.com/content/nvidiaGDC/vn/vi_VN/geforce/graphics-cards/_jcr_content/root/responsivegrid/nv_container_1965276325/nv_teaser_copy_1362348342.coreimg.100.850.jpeg/1735895726671/geforce-rtx-40-series-new.jpeg" alt="Graphic Card">
+        <h5>Graphic Card</h5>
+        <ul>
+          <li>NVIDIA RTX 4090</li>
+          <li>AMD Radeon RX 7900</li>
+        </ul>
+        </a>
+      </div>
+      <div class="product-card glass" id="onsale-products">
+        <a href="pages/blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://logashop.vn/wp-content/uploads/2021/04/tai-nghe-ps5-3.jpg" alt="On Sale Products">
+        <h5>On Sale Products</h5>
+        <ul>
+          <li>PS5 Headset</li>
+          <li>Xbox Game Pass</li>
+        </ul>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Top Creator Section -->
+  <div id="top-creator" class="container-custom page-section scroll-animate">
+    <div class="section-title">Top Creator</div>
+    <div class="cards-row">
+      <div class="creator-card glass">
+        <img src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80" alt="GamerX">
+        <h5>GamerX</h5>
+        <p>Expert in RPG reviews and walkthroughs.</p>
+      </div>
+      <div class="creator-card glass">
+        <img src="https://news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png" alt="ProConsole">
+        <h5>ProConsole</h5>
+        <p>Console comparison and in-depth hardware analysis.</p>
+      </div>
+      <div class="creator-card glass">
+        <img src="https://300mind.studio/blog/wp-content/uploads/2024/09/guide-to-aaa-games.webp" alt="PatchMaster">
+        <h5>PatchMaster</h5>
+        <p>Latest patch and update news for AAA games.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- News Letter Section -->
+  <div id="newsletter" class="page-section scroll-animate">
+    <div class="section-title">News Letter</div>
+    <div class="glass">
+      <form>
+        <div class="mb-3">
+          <label for="newsletterEmail" class="form-label">Get the latest news via email:</label>
+          <input type="email" class="form-control" id="newsletterEmail" placeholder="Enter your email">
+        </div>
+        <button type="submit" class="btn-glass">Subscribe</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="#">Home</a>
+      <a href="#latest-news">Latest News</a>
+      <a href="#games">Games</a>
+      <a href="#product">Product</a>
+      <a href="#top-creator">Top Creator</a>
+      <a href="#newsletter">Newsletter</a>
+      <a href="#make-blog">Edit</a>
+      <a href="#favorite">Favorite</a>
+      <a href="#account">Account</a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 GAMEBLOG. All Rights Reserved.
+    </div>
+  </footer>
+
+  <!-- JQuery Scroll Animation -->
+  <script>
+    $(document).ready(function() {
+      function animateOnScroll() {
+        $('.scroll-animate').each(function() {
+          var elementTop = $(this).offset().top;
+          var windowBottom = $(window).scrollTop() + $(window).height();
+          if (windowBottom > elementTop + 80) {
+            $(this).addClass('visible');
+          }
+        });
+      }
+      animateOnScroll();
+      $(window).on('scroll', animateOnScroll);
+    });
+  </script>
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</body>
+</html>
