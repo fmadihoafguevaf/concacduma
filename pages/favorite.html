@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Favorite News | Gaming Blog Website</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --border-radius: 1.2rem;
+      --section-max-width: 80vw;
+    }
+    body {
+      background: black;
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar, .dropdown-menu {
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.4rem);
+      border-bottom: 0.05rem solid rgba(255,255,255,0.25);
+    }
+    .navbar-brand { color: #fff !important; font-size: 2.2rem; letter-spacing: 0.15rem; }
+    .navbar-nav { display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
+    .nav-link, .dropdown-item {
+      color: #fff !important; position: relative;
+      transition: all 0.3s; border-bottom: 0.1rem solid transparent;
+      font-size: 1.15rem; text-decoration: none !important;
+    }
+    .nav-link:hover { border-bottom: 0.1rem solid #fff; color: #0dcaf0 !important; }
+    .nav-link.active { color: #0dcaf0 !important; }
+    .notification-btn, .account-btn {
+      border: none; background: none; color: #fff; font-size: 1.8rem; margin-left: 0.6rem;
+      position: relative; border-bottom: 0.1rem solid transparent;
+      transition: border-bottom 0.3s, color 0.3s; padding-bottom: 0.3rem;
+      text-decoration: none !important;
+    }
+    .notification-btn:hover, .account-btn:hover { color: #0dcaf0; border-bottom: 0.1rem solid #fff; }
+    .favorite-news-section {
+      margin: 4rem auto 2rem auto;
+      max-width: var(--section-max-width);
+      width: 100%;
+      min-height: 60vh;
+      padding: 2.5rem 2rem;
+      border-radius: var(--border-radius);
+      background: linear-gradient(120deg, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.9) 90%);
+      box-shadow: 0 .3rem 1.5rem #111;
+    }
+    .favorite-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #0dcaf0;
+      margin-bottom: 2rem;
+      letter-spacing: 0.08rem;
+    }
+    .favorite-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .favorite-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      background: rgba(255,255,255,0.07);
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1.2rem 1.3rem;
+      box-shadow: 0 .1rem .6rem #222;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .favorite-item:hover { background: rgba(13,202,240,0.07); }
+    .favorite-img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: .8rem;
+      margin-right: 1rem;
+      box-shadow: 0 .1rem .3rem #222;
+    }
+    .favorite-info { flex: 1; }
+    .favorite-title-link {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      transition: color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .favorite-title-link:hover { color: #0dcaf0; }
+    .favorite-desc { color: #c0c0c0; font-size: 1rem; margin-bottom: 0.1rem; }
+    .favorite-meta { color: #0dcaf0; font-size: 0.97rem; }
+    .btn-remove-favorite {
+      position: absolute;
+      top: 1.2rem;
+      right: 1.2rem;
+      background: none;
+      border: none;
+      color: #e74c3c;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+    .btn-remove-favorite:hover { color: #fff;}
+    @media (max-width: 991px) {
+      .favorite-news-section { padding: 1rem 0.3rem; }
+      .favorite-item { flex-direction: column; align-items: stretch; gap: 0.7rem; }
+      .favorite-img { width: 100%; height: 40vw; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg glass sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">GAMEBLOG</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              News
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+              <li><a class="dropdown-item" href="games.html">Games</a></li>
+              <li><a class="dropdown-item" href="product.html">Product</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="newsletter.html">News Letter</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#make-blog">Edit</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="follow_news.html">Followed News</a></li>
+          <li class="nav-item"><a class="nav-link" href="follow_creators.html">Followed Creators</a></li>
+          <li class="nav-item"><a class="nav-link active" href="favorite-news.html">Favorite</a></li>
+          <li class="nav-item dropdown">
+            <button class="notification-btn nav-link" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+              <li><a class="dropdown-item" href="follow_news.html">Followed News</a></li>
+              <li><a class="dropdown-item" href="follow_creators.html">Followed Creators</a></li>
+              <li><a class="dropdown-item" href="#">Favorite</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link account-btn" href="#account"><i class="bi bi-person"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Favorite News Section -->
+  <section class="favorite-news-section">
+    <div class="favorite-title"><i class="bi bi-heart-fill"></i> Favorite News</div>
+    <ul class="favorite-list" id="favoriteList">
+      <!-- Favorite news items will be injected here by JS -->
+    </ul>
+    <div id="noFavorites" style="color:#ccc;text-align:center;font-size:1.1rem; display:none;">
+      You have no favorite news yet.
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="latest-news.html">Latest News</a>
+      <a href="games.html">Games</a>
+      <a href="product.html">Product</a>
+      <a href="top-creator.html">Top Creator</a>
+      <a href="newsletter.html">Newsletter</a>
+      <!-- <a href="#make-blog">Edit</a> -->
+      <a href="favorite-news.html">Favorite</a>
+      <a href="#account">Account</a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 GAMEBLOG. All Rights Reserved.
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Example: store favorite news in localStorage as an array of objects under "favoriteNews"
+    // Each object: {title, image, desc, meta, link}
+    // Here we use a demo set if localStorage is empty
+ 
+    function getFavoriteNews() {
+      let favorites = localStorage.getItem('favoriteNews');
+      
+      return JSON.parse(favorites);
+    }
+
+    function setFavoriteNews(arr) {
+      localStorage.setItem('favoriteNews', JSON.stringify(arr));
+    }
+
+    function renderFavorites() {
+      const list = document.getElementById('favoriteList');
+      const noFavorites = document.getElementById('noFavorites');
+      let favorites = getFavoriteNews();
+      list.innerHTML = '';
+      if (!favorites.length) {
+        noFavorites.style.display = 'block';
+        return;
+      }
+      noFavorites.style.display = 'none';
+      favorites.forEach((news, idx) => {
+        let li = document.createElement('li');
+        li.className = "favorite-item";
+        li.innerHTML = `
+          <img class="favorite-img" src="${news.image}" alt="${news.title}">
+          <div class="favorite-info">
+            <a class="favorite-title-link" href="${news.link}">${news.title}</a>
+            <div class="favorite-desc">${news.desc}</div>
+            <div class="favorite-meta">${news.meta}</div>
+          </div>
+          <button class="btn-remove-favorite" data-idx="${idx}" title="Remove from favorite"><i class="bi bi-x-lg"></i></button>
+        `;
+        list.appendChild(li);
+      });
+      // Remove handler
+      document.querySelectorAll('.btn-remove-favorite').forEach(btn => {
+        btn.onclick = function() {
+          let idx = parseInt(this.getAttribute('data-idx'));
+          let favorites = getFavoriteNews();
+          favorites.splice(idx, 1);
+          setFavoriteNews(favorites);
+          renderFavorites();
+        }
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", renderFavorites);
+  </script>
+</body>
+</html>

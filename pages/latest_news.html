@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Latest News | Gaming Blog Website</title>
+  <!-- CSS -->
+   <link rel="stylesheet" href="../style.css">
+  <!-- Bootstrap CDN -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- jQuery CDN -->
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <!-- Bootstrap JS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <style>
+    /* --- CSS unchanged, as requested --- */
+    :root {
+      --side-margin: 12.5rem; /* 200px converted to rem */
+      --section-max-width: 80vw;
+      --card-min-width: 18rem;
+      --gap-large: 2.5rem;
+      --gap-medium: 2rem;
+      --gap-small: 1.5rem;
+      --border-radius: 1.2rem;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      background: black;
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      font-size: 1.1rem;
+      margin: 0;
+      padding: 0;
+    }
+    .container-custom {
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
+      max-width: var(--section-max-width);
+    }
+    .glass {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(0.5rem);
+    }
+    .navbar, .dropdown-menu {
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.4rem);
+      border-bottom: 0.05rem solid rgba(255,255,255,0.25);
+    }
+    .navbar-brand {
+      color: #fff !important;
+      font-size: 2.2rem;
+      letter-spacing: 0.15rem;
+    }
+    .navbar-nav {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      margin-left: auto;
+    }
+    .nav-link, .dropdown-item {
+      color: #fff !important;
+      position: relative;
+      transition: all 0.3s;
+      border-bottom: 0.1rem solid transparent;
+      font-size: 1.15rem;
+      text-decoration: none !important;
+    }
+    .nav-link:hover {
+      border-bottom: 0.1rem solid #fff;
+      color: #0dcaf0 !important;
+    }
+    .nav-link.active {
+      color: #0dcaf0 !important;
+    }
+    .notification-btn, .account-btn {
+      border: none;
+      background: none;
+      color: #fff;
+      font-size: 1.8rem;
+      margin-left: 0.6rem;
+      position: relative;
+      border-bottom: 0.1rem solid transparent;
+      transition: border-bottom 0.3s, color 0.3s;
+      padding-bottom: 0.3rem;
+      text-decoration: none !important;
+    }
+    .notification-btn:hover, .account-btn:hover {
+      color: #0dcaf0;
+      border-bottom: 0.1rem solid #fff;
+    }
+    .favorite-btn {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.8rem;
+      margin-left: 0.6rem;
+      position: relative;
+      text-decoration: none !important;
+    }
+    .favorite-btn:hover {
+      color: #0dcaf0;
+    }
+    .dropdown-menu .dropdown-item {
+      transition: background 0.3s, color 0.3s;
+      background: transparent;
+      text-decoration: none !important;
+    }
+    .dropdown-menu .dropdown-item:hover, 
+    .dropdown-menu .dropdown-item:focus {
+      background: rgba(200,200,200,0.12);
+      color: #0dcaf0 !important;
+      backdrop-filter: blur(0.25rem);
+      text-decoration: none !important;
+    }
+    .dropdown-menu {
+      min-width: 18rem;
+      border-radius: var(--border-radius);
+      border: 0.1rem solid rgba(255,255,255,0.13);
+      margin-top: 0.5rem;
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.5rem);
+    }
+    .btn-glass {
+      background: #000;
+      color: #fff;
+      border: none;
+      padding: 0.8rem 2.8rem;
+      border-radius: 0.7rem;
+      transition: all 0.3s ease;
+      font-size: 1.3rem;
+      border-width: .1rem;
+      border-style: solid;
+      box-shadow: 0 0.2rem 0.5rem #000;
+      text-decoration: none !important;
+    }
+    .btn-glass:hover {
+      background-color: white;
+      color: black;
+    }
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.06rem;
+      margin-top: 3rem;
+    }
+    .cards-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--gap-medium);
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+    .game-card, .creator-card, .product-card {
+      background: linear-gradient(135deg, rgba(255,255,255,.1) 1%, rgba(0,0,0,0.9) 5%);
+      border-radius: var(--border-radius);
+      padding: 2rem 1.5rem;
+      margin-bottom: 1rem;
+      border: 0.1rem solid rgba(255,255,255,0.13);
+      transition: box-shadow 0.3s, transform 0.3s;
+      display: flex;
+      flex-direction: column;
+      min-width: var(--card-min-width);
+      font-size: 1.18rem;
+      cursor: pointer;
+      backdrop-filter: none;
+      box-shadow: 0 .1rem .5rem #111;
+      justify-content: flex-start;
+    }
+    .game-card img, .creator-card img, .product-card img {
+      width: 100%;
+      max-width: 22rem;
+      height: 12rem;
+      object-fit: cover;
+      border-radius: 0.7rem;
+      margin-bottom: 1.2rem;
+    }
+    .game-card:hover, .creator-card:hover, .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 .5rem 2rem black;
+    }
+    .page-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--gap-large);
+      margin-bottom: var(--gap-large);
+      width: 100%;
+    }
+    .scroll-animate {
+      opacity: 0;
+      transform: translateY(2.5rem);
+      transition: opacity 0.6s, transform 0.6s;
+    }
+    .scroll-animate.visible {
+      opacity: 1;
+      transform: none;
+    }
+    @media (max-width: 991px) {
+      .cards-row {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg glass sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">GAMEBLOG</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link active dropdown-toggle" href="#" id="productDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Latest News
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="productDropdown">
+              <li><a class="dropdown-item" href="games.html">Games</a></li>
+              <li><a class="dropdown-item" href="product.html">Product</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="newsletter.html">News Letter</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#make-blog">Edit</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="favorite.html">Favorite</a></li>
+          <li class="nav-item dropdown">
+            <button class="notification-btn nav-link" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+              <li><a class="dropdown-item" href="follow_news.html">Follow news</a></li>
+              <li><a class="dropdown-item" href="follow_creators.html">Follow creators</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link account-btn" href="#account"><i class="bi bi-person"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Content Section -->
+  <div class="container-custom page-section scroll-animate" id="latest-news">
+    <div class="section-title">Latest News</div>
+    <div class="cards-row">
+      <!-- ROW 1 -->
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn1.epicgames.com/offer/77f2b98e2cef40c8a7437518bf420e47/EGS_Cyberpunk2077PhantomLiberty_CDPROJEKTRED_DLC_S2_1200x1600-3acec02a8b11a2c50ba8dd3cb217f1c6" alt="Cyberpunk 2077 DLC">
+        <h5>Cyberpunk 2077 DLC Released</h5>
+        <p>New adventures in Night City. Patch 1.5 brings major improvements!</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://images2.thanhnien.vn/528068263637045248/2024/11/4/ps5-pro-image-1730691922654-173069192359098317605.jpg" alt="PS5 Patch Update">
+        <h5>PS5 Patch Update</h5>
+        <p>System stability and performance boost in the latest update.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://xboxwire.thesourcemediaassets.com/sites/2/2023/10/Action_Adventure_Sale-_Social_1920x1080_textless-5e26722a6e69bdc6e14d.jpg" alt="Xbox Game Sale">
+        <h5>Xbox Game Sale</h5>
+        <p>Up to 50% off top titles for a limited time only!</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://www.stuff.tv/wp-content/uploads/sites/2/2023/04/Game-Pass.png" alt="Xbox Game Pass Update">
+        <h5>Xbox Game Pass Update</h5>
+        <p>New games added to Xbox Game Pass lineup in July!</p>
+        </a>
+      </div>
+      <!-- ROW 2 -->
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://assets-prd.ignimgs.com/2025/07/16/bgr-2025-br-1752701519535.jpg?width=1280&format=jpg&auto=webp&quality=80" alt="Upcoming Games August">
+        <h5>Upcoming Games in August</h5>
+        <p>Check out the most anticipated releases for August 2025.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn.mos.cms.futurecdn.net/BFGaq58LBQYsUkqL3ApZZM.jpg" alt="New PS5 Box Art">
+        <h5>New PS5 Box Art Revealed</h5>
+        <p>PlayStation reveals new box art for upcoming exclusives.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://www.guerrilla-games.com/media/News/HFW-release-date-2560w.webp?width=1200&height=630&rmode=crop" alt="Horizon Forbidden West Sale">
+        <h5>Horizon Forbidden West Sale</h5>
+        <p>Grab Horizon Forbidden West at a special price for a limited time!</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn.vietgame.asia/wp-content/uploads/20240706111028/elden-ring-shadow-of-the-erdtree-danh-gia-game.jpg" alt="Elden Ring DLC">
+        <h5>Elden Ring: Shadow of the Erdtree</h5>
+        <p>The long-awaited Elden Ring expansion launches worldwide.</p>
+        </a>
+      </div>
+      <!-- ROW 3 -->
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://haloshop.vn/wp-content/uploads/2025/01/resident-evil-4-remake-vuot-moc-9-trieu-ban-duoc-ban-tren-toan-the-gioi-2.jpg" alt="Resident Evil 4 Remake">
+        <h5>Resident Evil 4 Remake</h5>
+        <p>Classic horror returns with stunning graphics and gameplay.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn.wccftech.com/wp-content/uploads/2025/07/Starfield.jpg" alt="Starfield Launch">
+        <h5>Starfield Launch Date Announced</h5>
+        <p>Bethesda announces launch date for their space epic Starfield.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://hiepsibaotap.com/wp-content/uploads/2024/10/Silent-Hill-2-Key-Art.jpg" alt="Silent Hill 2 Remake">
+        <h5>Silent Hill 2 Remake Announced</h5>
+        <p>Konami reveals Silent Hill 2 Remake with new trailer.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://static0.gamerantimages.com/wordpress/wp-content/uploads/2022/06/halo-infinite-campaign-dlc-leak.jpg" alt="Halo Infinite DLC">
+        <h5>Halo Infinite DLC</h5>
+        <p>New multiplayer maps and DLC for Halo Infinite drop this month.</p>
+        </a>
+      </div>
+      <!-- ROW 4 -->
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://cdn.arstechnica.net/wp-content/uploads/2022/11/AMD-Radeon-RX-7900-XTX_10.jpeg" alt="Radeon RX 7900 Launch">
+        <h5>AMD Radeon RX 7900 Launch</h5>
+        <p>AMD announces their latest graphics card RX 7900 series.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://platform.polygon.com/wp-content/uploads/sites/2/chorus/uploads/chorus_asset/file/25476240/ELDENRING_SotE_19_4K.jpeg?quality=90&strip=all&crop=7.8125,0,84.375,100" alt="Elden Ring Expansion">
+        <h5>Elden Ring Expansion</h5>
+        <p>Explore new lands and challenges in the Elden Ring expansion.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://www.pcworld.com/wp-content/uploads/2025/06/Nvidia-GeForce-RTX-4090-1.jpg?quality=50&strip=all" alt="NVIDIA RTX 4090 News">
+        <h5>NVIDIA RTX 4090 News</h5>
+        <p>NVIDIA releases driver update and performance boost for RTX 4090.</p>
+        </a>
+      </div>
+      <div class="game-card glass">
+        <a href="blog_detail.html" onclick="
+            localStorage.setItem('blogImage', this.querySelector('img').src);
+            localStorage.setItem('blogTitle', this.querySelector('h4, h5').textContent);
+            localStorage.setItem('blogContent', this.querySelector('p, ul').textContent);
+            localStorage.setItem('blogCategory', this.parentElement.classList.contains('game-card') ? 'games' : 'product');
+            localStorage.setItem('creatorImage', this.parentElement.classList.contains('game-card') ? 'https:/images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80' : 'https:/news.khangz.com/wp-content/uploads/2024/05/game-console-1-750x450.png');
+            localStorage.setItem('creatorName', this.parentElement.classList.contains('game-card') ? 'GamerX' : 'ProConsole');" style="text-decoration: none; color: white;">
+        <img src="https://images.unsplash.com/photo-1511512578047-dfb367046420?auto=format&fit=crop&w=1600&q=80" alt="Gaming Community">
+        <h5>Gaming Community Spotlight</h5>
+        <p>Meet the top creators and contributors in our gaming community.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- JQuery Scroll Animation -->
+  <script>
+    $(document).ready(function() {
+      function animateOnScroll() {
+        $('.scroll-animate').each(function() {
+          var elementTop = $(this).offset().top;
+          var windowBottom = $(window).scrollTop() + $(window).height();
+          if (windowBottom > elementTop + 80) {
+            $(this).addClass('visible');
+          }
+        });
+      }
+      animateOnScroll();
+      $(window).on('scroll', animateOnScroll);
+    });
+  </script>
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+</body>
+</html>

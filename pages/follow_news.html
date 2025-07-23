@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Followed News | Gaming Blog Website</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --border-radius: 1.2rem;
+      --section-max-width: 80vw;
+    }
+    body {
+      background: black;
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar, .dropdown-menu {
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.4rem);
+      border-bottom: 0.05rem solid rgba(255,255,255,0.25);
+    }
+    .navbar-brand { color: #fff !important; font-size: 2.2rem; letter-spacing: 0.15rem; }
+    .navbar-nav { display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
+    .nav-link, .dropdown-item {
+      color: #fff !important; position: relative;
+      transition: all 0.3s; border-bottom: 0.1rem solid transparent;
+      font-size: 1.15rem; text-decoration: none !important;
+    }
+    .nav-link:hover { border-bottom: 0.1rem solid #fff; color: #0dcaf0 !important; }
+    .nav-link.active { color: #0dcaf0 !important; }
+    .notification-btn, .account-btn {
+      border: none; background: none; color: #fff; font-size: 1.8rem; margin-left: 0.6rem;
+      position: relative; border-bottom: 0.1rem solid transparent;
+      transition: border-bottom 0.3s, color 0.3s; padding-bottom: 0.3rem;
+      text-decoration: none !important;
+    }
+    .notification-btn:hover, .account-btn:hover { color: #0dcaf0; border-bottom: 0.1rem solid #fff; }
+    .followed-news-section {
+      margin: 4rem auto 2rem auto;
+      max-width: var(--section-max-width);
+      width: 100%;
+      min-height: 60vh;
+      padding: 2.5rem 2rem;
+      border-radius: var(--border-radius);
+      background: linear-gradient(120deg, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.9) 90%);
+      box-shadow: 0 .3rem 1.5rem #111;
+    }
+    .followed-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #0dcaf0;
+      margin-bottom: 2rem;
+      letter-spacing: 0.08rem;
+    }
+    .news-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .news-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 1.5rem;
+      background: rgba(255,255,255,0.07);
+      border-radius: 1rem;
+      margin-bottom: 1.5rem;
+      padding: 1.2rem 1.3rem;
+      box-shadow: 0 .1rem .6rem #222;
+      transition: background 0.2s;
+    }
+    .news-item:hover { background: rgba(13,202,240,0.07); }
+    .news-img {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: .8rem;
+      margin-right: 1rem;
+      box-shadow: 0 .1rem .3rem #222;
+    }
+    .news-info { flex: 1; }
+    .news-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      transition: color 0.2s;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .news-title:hover { color: #0dcaf0; }
+    .news-desc { color: #c0c0c0; font-size: 1rem; margin-bottom: 0.1rem; }
+    .news-meta { color: #0dcaf0; font-size: 0.97rem; }
+    @media (max-width: 991px) {
+      .followed-news-section { padding: 1rem 0.3rem; }
+      .news-item { flex-direction: column; align-items: stretch; gap: 0.7rem; }
+      .news-img { width: 100%; height: 40vw; max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg glass sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">GAMEBLOG</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              News
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+              <li><a class="dropdown-item" href="games.html">Games</a></li>
+              <li><a class="dropdown-item" href="product.html">Product</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="newsletter.html">News Letter</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#make-blog">Edit</a></li> -->
+          <li class="nav-item"><a class="nav-link active" href="follow_news.html">Followed News</a></li>
+          <li class="nav-item"><a class="nav-link" href="follow_creators.html">Followed Creators</a></li>
+          <li class="nav-item"><a class="nav-link" href="favorite.html">Favorite</a></li>
+          <li class="nav-item dropdown">
+            <button class="notification-btn nav-link" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+              <li><a class="dropdown-item" href="follow_news.html">Followed News</a></li>
+              <li><a class="dropdown-item" href="follow_creators.html">Followed Creators</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link account-btn" href="#account"><i class="bi bi-person"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Followed News Section -->
+  <section class="followed-news-section">
+    <div class="followed-title"><i class="bi bi-newspaper"></i> Followed News</div>
+    <ul class="news-list">
+      <li class="news-item">
+        <img src="https://cdn1.epicgames.com/offer/77f2b98e2cef40c8a7437518bf420e47/EGS_Cyberpunk2077PhantomLiberty_CDPROJEKTRED_DLC_S2_1200x1600-3acec02a8b11a2c50ba8dd3cb217f1c6" class="news-img" alt="Cyberpunk DLC">
+        <div class="news-info">
+          <a class="news-title" href="blog_detail.html">Cyberpunk 2077 DLC Released</a>
+          <div class="news-desc">Patch 1.5 brings major improvements! Dive into new quests and expanded areas.</div>
+          <div class="news-meta">Games &middot; 2 days ago</div>
+        </div>
+      </li>
+      <li class="news-item">
+        <img src="https://images2.thanhnien.vn/528068263637045248/2024/11/4/ps5-pro-image-1730691922654-173069192359098317605.jpg" class="news-img" alt="PS5 Patch">
+        <div class="news-info">
+          <a class="news-title" href="blog_detail.html">PS5 Patch Update</a>
+          <div class="news-desc">System stability and performance boost in the latest update.</div>
+          <div class="news-meta">Product &middot; 1 week ago</div>
+        </div>
+      </li>
+      <li class="news-item">
+        <img src="https://cdn2.fptshop.com.vn/unsafe/1920x0/filters:format(webp):quality(75)/2024_2_17_638437302423248236_xbox-game.jpeg" class="news-img" alt="Xbox Sale">
+        <div class="news-info">
+          <a class="news-title" href="blog_detail.html">Xbox Game Sale</a>
+          <div class="news-desc">Up to 50% off top titles for a limited time only!</div>
+          <div class="news-meta">Games &middot; 2 weeks ago</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="latest-news.html">Latest News</a>
+      <a href="games.html">Games</a>
+      <a href="product.html">Product</a>
+      <a href="top-creator.html">Top Creator</a>
+      <a href="newsletter.html">Newsletter</a>
+      <a href="#make-blog">Edit</a>
+      <a href="#favorite">Favorite</a>
+      <a href="#account">Account</a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 GAMEBLOG. All Rights Reserved.
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Followed Creators | Gaming Blog Website</title>
+  <!-- CSS -->
+  <link rel="stylesheet" href="../style.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+  <style>
+    :root {
+      --border-radius: 1.2rem;
+      --section-max-width: 80vw;
+    }
+    body {
+      background: black;
+      color: #fff;
+      font-family: 'Segoe UI', 'Roboto', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .navbar, .dropdown-menu {
+      background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0) 100%) !important;
+      backdrop-filter: blur(0.4rem);
+      border-bottom: 0.05rem solid rgba(255,255,255,0.25);
+    }
+    .navbar-brand { color: #fff !important; font-size: 2.2rem; letter-spacing: 0.15rem; }
+    .navbar-nav { display: flex; align-items: center; gap: 1.5rem; margin-left: auto; }
+    .nav-link, .dropdown-item {
+      color: #fff !important; position: relative;
+      transition: all 0.3s; border-bottom: 0.1rem solid transparent;
+      font-size: 1.15rem; text-decoration: none !important;
+    }
+    .nav-link:hover { border-bottom: 0.1rem solid #fff; color: #0dcaf0 !important; }
+    .nav-link.active { color: #0dcaf0 !important; }
+    .notification-btn, .account-btn {
+      border: none; background: none; color: #fff; font-size: 1.8rem; margin-left: 0.6rem;
+      position: relative; border-bottom: 0.1rem solid transparent;
+      transition: border-bottom 0.3s, color 0.3s; padding-bottom: 0.3rem;
+      text-decoration: none !important;
+    }
+    .notification-btn:hover, .account-btn:hover { color: #0dcaf0; border-bottom: 0.1rem solid #fff; }
+    .followed-creators-section {
+      margin: 4rem auto 2rem auto;
+      max-width: var(--section-max-width);
+      width: 100%;
+      min-height: 60vh;
+      padding: 2.5rem 2rem;
+      border-radius: var(--border-radius);
+      background: linear-gradient(120deg, rgba(255,255,255,0.07) 0%, rgba(0,0,0,0.9) 90%);
+      box-shadow: 0 .3rem 1.5rem #111;
+    }
+    .followed-title {
+      font-size: 2.2rem;
+      font-weight: bold;
+      color: #0dcaf0;
+      margin-bottom: 2rem;
+      letter-spacing: 0.08rem;
+    }
+    .creators-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: flex-start;
+    }
+    .creator-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background: rgba(255,255,255,0.10);
+      border-radius: 1rem;
+      box-shadow: 0 .1rem .6rem #222;
+      padding: 2.1rem 1.7rem 1.2rem 1.7rem;
+      width: 235px;
+      min-width: 180px;
+      max-width: 100vw;
+      margin-bottom: 1rem;
+      transition: background 0.2s;
+    }
+    .creator-card:hover { background: rgba(13,202,240,0.10); }
+    .creator-img {
+      width: 75px;
+      height: 75px;
+      border-radius: 50%;
+      object-fit: cover;
+      box-shadow: 0 .1rem .4rem #222;
+      border: 0.15rem solid #fff;
+      margin-bottom: 1.1rem;
+    }
+    .creator-name {
+      font-size: 1.18rem;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .creator-meta {
+      color: #0dcaf0;
+      font-size: 0.95rem;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+    .btn-unfollow {
+      background: transparent;
+      color: #e74c3c;
+      border: 1.5px solid #e74c3c;
+      border-radius: 0.6rem;
+      padding: 0.5rem 1.5rem;
+      font-size: 1rem;
+      font-weight: 500;
+      transition: background 0.23s, color 0.23s;
+      cursor: pointer;
+      box-shadow: none;
+    }
+    .btn-unfollow:hover {
+      background: #e74c3c;
+      color: #fff;
+    }
+    @media (max-width: 991px) {
+      .followed-creators-section { padding: 1rem 0.3rem; }
+      .creators-list { gap: 1rem; }
+      .creator-card { padding: 1.3rem 0.8rem 1rem 0.8rem; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg glass sticky-top">
+    <div class="container-fluid">
+      <a class="navbar-brand fw-bold" href="../index.html">GAMEBLOG</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="color:#fff;"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link" href="../index.html">Home</a></li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="newsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              News
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="newsDropdown">
+              <li><a class="dropdown-item" href="games.html">Games</a></li>
+              <li><a class="dropdown-item" href="product.html">Product</a></li>
+            </ul>
+          </li>
+          <li class="nav-item"><a class="nav-link" href="newsletter.html">News Letter</a></li>
+          <!-- <li class="nav-item"><a class="nav-link" href="#make-blog">Edit</a></li> -->
+          <li class="nav-item"><a class="nav-link" href="follow_news.html">Followed News</a></li>
+          <li class="nav-item"><a class="nav-link active" href="#">Followed Creators</a></li>
+          <li class="nav-item"><a class="nav-link" href="favorite.html">Favorite</a></li>
+          <li class="nav-item dropdown">
+            <button class="notification-btn nav-link" id="notificationDropdownBtn" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="bi bi-bell"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="notificationDropdownBtn">
+              <li><a class="dropdown-item" href="follow_news.html">Followed News</a></li>
+              <li><a class="dropdown-item" href="follow_creators.html">Followed Creators</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link account-btn" href="#account"><i class="bi bi-person"></i></a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Followed Creators Section -->
+  <section class="followed-creators-section">
+    <div class="followed-title"><i class="bi bi-person-heart"></i> Followed Creators</div>
+    <ul class="creators-list">
+      <li class="creator-card">
+        <img class="creator-img" src="https://images.pexels.com/photos/91227/pexels-photo-91227.jpeg?auto=compress&w=800&q=80" alt="GamerX">
+        <div class="creator-name">GamerX</div>
+        <div class="creator-meta">Writer · 12 blogs</div>
+        <button class="btn-unfollow">Unfollow</button>
+      </li>
+      <li class="creator-card">
+        <img class="creator-img" src="https://images.pexels.com/photos/877903/pexels-photo-877903.jpeg?auto=compress&w=800&q=80" alt="ProConsole">
+        <div class="creator-name">ProConsole</div>
+        <div class="creator-meta">Reviewer · 7 blogs</div>
+        <button class="btn-unfollow">Unfollow</button>
+      </li>
+      <li class="creator-card">
+        <img class="creator-img" src="https://images.pexels.com/photos/846133/pexels-photo-846133.jpeg?auto=compress&w=800&q=80" alt="PatchMaster">
+        <div class="creator-name">PatchMaster</div>
+        <div class="creator-meta">Blogger · 10 blogs</div>
+        <button class="btn-unfollow">Unfollow</button>
+      </li>
+    </ul>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-links">
+      <a href="../index.html">Home</a>
+      <a href="latest-news.html">Latest News</a>
+      <a href="games.html">Games</a>
+      <a href="product.html">Product</a>
+      <a href="top-creator.html">Top Creator</a>
+      <a href="newsletter.html">Newsletter</a>
+      <a href="#make-blog">Edit</a>
+      <a href="#favorite">Favorite</a>
+      <a href="#account">Account</a>
+    </div>
+    <div class="footer-copyright">
+      © 2025 GAMEBLOG. All Rights Reserved.
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
